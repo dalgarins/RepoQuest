@@ -14,9 +14,6 @@ class ArtifactDetailDialog(parent: JFrame, artifactDetail: ArtifactDetail) : JDi
         layout = BorderLayout()
         val tabbedPane = JBTabbedPane()
 
-        artifactDetail.gradleKotlinContent?.let {
-            tabbedPane.addTab("Gradle Kotlin", createCopyableTextArea(it))
-        }
         artifactDetail.mavenContent?.let {
             tabbedPane.addTab("Maven", createCopyableTextArea(it))
         }
@@ -25,6 +22,9 @@ class ArtifactDetailDialog(parent: JFrame, artifactDetail: ArtifactDetail) : JDi
         }
         artifactDetail.sbtContent?.let {
             tabbedPane.addTab("SBT", createCopyableTextArea(it))
+        }
+        artifactDetail.millContent?.let {
+            tabbedPane.addTab("Mill", createCopyableTextArea(it))
         }
         artifactDetail.ivyContent?.let {
             tabbedPane.addTab("Ivy", createCopyableTextArea(it))

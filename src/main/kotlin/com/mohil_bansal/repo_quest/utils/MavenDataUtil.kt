@@ -299,46 +299,49 @@ object MavenDataUtil {
                     val tables = document.getElementsByTag("table")
                     val table = tables.firstOrNull()
 
+                    // Extract all dependency formats from their respective textarea elements
                     val maven = document.getElementById("maven-a")
                     val gradle = document.getElementById("gradle-a")
                     val sbt = document.getElementById("sbt-a")
+                    val mill = document.getElementById("mill-a")
                     val ivy = document.getElementById("ivy-a")
-                    val leiningen = document.getElementById("leiningen-a")
                     val grape = document.getElementById("grape-a")
+                    val leiningen = document.getElementById("leiningen-a")
                     val buildr = document.getElementById("buildr-a")
                     val gradleShort = document.getElementById("gradle-short-a")
-                    val gradleShortKotlin = document.getElementById("gradle-short-kotlin-a")
 
                     val detail = ArtifactDetail().apply {
                         artifactId = artifactItem.artifactId
                         version = artifactItem.version
-                        mavenContent = toValue(maven?.text() ?: "")
-                        gradleContent = toValue(gradle?.text() ?: "")
-                        sbtContent = toValue(sbt?.text() ?: "")
-                        ivyContent = toValue(ivy?.text() ?: "")
-                        leiningenContent = toValue(leiningen?.text() ?: "")
-                        grapeContent = toValue(grape?.text() ?: "")
-                        buildrContent = toValue(buildr?.text() ?: "")
-                        gradleShortContent = toValue(gradleShort?.text() ?: "")
-                        gradleKotlinContent = toValue(gradleShortKotlin?.text() ?: "")
+                        mavenContent = cleanDependencyText(maven?.text() ?: "")
+                        gradleContent = cleanDependencyText(gradle?.text() ?: "")
+                        sbtContent = cleanDependencyText(sbt?.text() ?: "")
+                        ivyContent = cleanDependencyText(ivy?.text() ?: "")
+                        leiningenContent = cleanDependencyText(leiningen?.text() ?: "")
+                        grapeContent = cleanDependencyText(grape?.text() ?: "")
+                        buildrContent = cleanDependencyText(buildr?.text() ?: "")
+                        millContent = cleanDependencyText(mill?.text() ?: "") // Add Mill content
+                        gradleShortContent = cleanDependencyText(gradleShort?.text() ?: "")
 
                         if (table != null) {
                             val trList = table.getElementsByTag("tr")
                             for (tr in trList) {
-                                val key = tr.child(0).text()
-                                val value = tr.child(1).text()
-                                when (key) {
-                                    "License" -> license = value
-                                    "Categories" -> category = value
-                                    "Organization" -> organization = value
-                                    "HomePage" -> homePage = value
-                                    "Date" -> date = value
-                                    "Repositories" -> repository = value
+                                if (tr.childrenSize() >= 2) {
+                                    val key = tr.child(0).text()
+                                    val value = tr.child(1).text()
+                                    when (key) {
+                                        "License" -> license = value
+                                        "Categories" -> category = value
+                                        "Organization" -> organization = value
+                                        "HomePage" -> homePage = value
+                                        "Date" -> date = value
+                                        "Repositories" -> repository = value
+                                    }
                                 }
                             }
                         }
                     }
-                    println("searchArtifactDetail Detail: ArtifactId=${detail.artifactId}, Version=${detail.version}, License=${detail.license}, Categories=${detail.category}, Organization=${detail.organization}, HomePage=${detail.homePage}, Date=${detail.date}, Repositories=${detail.repository}, GradleKotlin=${detail.gradleKotlinContent}")
+                    println("searchArtifactDetail Detail: ArtifactId=${detail.artifactId}, Version=${detail.version}, License=${detail.license}, Categories=${detail.category}, Organization=${detail.organization}, HomePage=${detail.homePage}, Date=${detail.date}, Repositories=${detail.repository}")
                     callback.onSuccess(detail)
                 } else {
                     callback.onFailure(FAILURE_MSG)
@@ -352,22 +355,21 @@ object MavenDataUtil {
         }
     }
 
+    // Helper function to clean dependency text
+    private fun cleanDependencyText(text: String): String {
+        if (text.isBlank()) return ""
+        return text.trim()
+    }
 
     private fun toValue(text: String): String {
-        val split = Arrays.asList(*text.split("\n".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray())
-        val sb = StringBuilder()
-        for (i in 1..<split.size) {
-            sb.append(split[i])
-            if (i != split.size - 1) {
-                sb.append("\n")
-            }
-        }
-        return sb.toString()
+        if (text.isBlank()) return ""
+        val lines = text.split("\n").filter { it.isNotBlank() }
+        return lines.joinToString("\n")
     }
 
     fun parseInt(content: String): Int {
         var matcher: Matcher? = null
-        if (StringUtils.isBlank(content)) {
+        if (content.isBlank()) {
             return 0
         }
         matcher = Pattern.compile("[0-9.]+").matcher(content.replace(",".toRegex(), ""))

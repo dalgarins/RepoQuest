@@ -20,8 +20,8 @@ class ArtifactDetail {
     var mavenContent: String? = null
     var gradleContent: String? = null
     var gradleShortContent : String? = null
-    var gradleKotlinContent : String? = null
     var sbtContent: String? = null
+    var millContent: String? = null
     var ivyContent: String? = null
     var leiningenContent: String? = null
     var grapeContent: String? = null

@@ -15,6 +15,7 @@ dependencies{
   implementation("com.squareup.okhttp3:okhttp:5.0.0-alpha.14")
   implementation("org.jsoup:jsoup:1.18.3")
   implementation("com.google.code.gson:gson:2.12.1")
+  implementation("org.apache.commons:commons-lang3:3.14.0")
 }
 
 // Configure Gradle IntelliJ Plugin
@@ -38,7 +39,6 @@ tasks {
 
   patchPluginXml {
     sinceBuild.set("241")
-    untilBuild.set("243.*")
   }
 
   signPlugin {
