@@ -34,7 +34,7 @@
                 id="RepoQuest"
                 anchor="right"
                 secondary="true"
-                icon="/META-INF/repoquest.svg"/>
+                icon="/META-INF/pluginIcon.svg"/>
     </extensions>
 
 <!--    <actions>-->
