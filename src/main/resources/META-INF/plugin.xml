@@ -1,17 +1,10 @@
-<!-- Plugin Configuration File. Read more: https://plugins.jetbrains.com/docs/intellij/plugin-configuration-file.html -->
 <idea-plugin>
     <id>com.mohil_bansal.repo_quest.RepoQuest</id>
 
-    <!-- Public plugin name should be written in Title Case.
-         Guidelines: https://plugins.jetbrains.com/docs/marketplace/plugin-overview-page.html#plugin-name -->
     <name>RepoQuest</name>
-    <version>1.0.0</version>
+    <version>1.0.1</version>
 
     <vendor email="mohilbansal.official@gmail.com" url="https://www.mohilbansal.tech">Mohil Bansal</vendor>
-
-    <!-- Description of the plugin displayed on the Plugin Page and IDE Plugin Manager.
-         Simple HTML elements (text formatting, paragraphs, and lists) can be added inside of <![CDATA[ ]]> tag.
-         Guidelines: https://plugins.jetbrains.com/docs/marketplace/plugin-overview-page.html#plugin-description -->
 
     <description><![CDATA[
     This plugin provides a tool window for searching dependencies.
